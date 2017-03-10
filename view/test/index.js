@@ -20,6 +20,7 @@ export default class Test extends Component {
     render(){
        return(
         <View style={styles.container}>
+            <Search/>
             <Slide/>
             <Bootom/>
         </View>
