@@ -13,8 +13,6 @@ import {
 } from 'react-native';
 import Test from './view/test'
 import App from './view/app'
-import Slide from './view/slide'
-import Bottom from './view/bottom'
 export default class note extends Component {
   render() {
     return (

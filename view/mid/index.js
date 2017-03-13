@@ -7,46 +7,35 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-export default class Slide extends Component {
+export default class Mid extends Component {
     constructor(props)
     {
         super(props);
-        fetch('http://10.10.10.3:3000/getNoteBookList',{method:'GET'})
-        .then((response)=>{
-            return response.json();
-        })
-        .then((json)=>{
-            this.setState({notebooklist:json});
-        })
-        this.state={
-            pos:1,
-            notebooklist:[]
-        }
     }
     render(){
         
         return(
                 <View style={styles.slide}>
-                    {this.createBrand(this.state.pos-1)}
-                    {this.createBrand(this.state.pos)}
-                    {this.createBrand(this.state.pos+1)}
+                    {this.createBrand(this.props.NoteBookPos-1)}
+                    {this.createBrand(this.props.NoteBookPos)}
+                    {this.createBrand(this.props.NoteBookPos+1)}
                 </View>
         );
     }
     leftPress=()=>{
-        this.setState({pos:this.state.pos-1});
+        this.props.SetNoteBookPos(this.props.NoteBookPos-1);
     }
     midPress=()=>{
-        alert('midPress');
+        
     }
     rightPress=()=>{
-        this.setState({pos:this.state.pos+1});
+        this.props.SetNoteBookPos(this.props.NoteBookPos+1);
     }
     addpress=()=>{
         alert('addpress');
     }
-    createBrand=(cur,onPress)=>{
-        if(cur<0 || cur>=this.state.notebooklist.length)
+    createBrand=(cur)=>{
+        if(cur<0 || cur>=this.props.NoteBookList.length)
         {
             return(
                 <View style={styles.imgcontainer}>
@@ -57,18 +46,18 @@ export default class Slide extends Component {
                 </View>
             );
         }
-        else if(this.state.pos==cur)
+        else if(this.props.NoteBookPos==cur)
         {
             return(
                 <Text key={cur} style={styles.chooseditems} onPress={this.midPress}>
-                {this.state.notebooklist[cur].name.toString()}
+                {this.props.NoteBookList[cur].name.toString()}
                 </Text>
             );
         }
         else
         {
                 var PressFun;
-                if(cur<this.state.pos)
+                if(cur<this.props.NoteBookPos)
                 {
                     PressFun=this.leftPress;
                 }
@@ -78,7 +67,7 @@ export default class Slide extends Component {
                 }
                 return(
                 <Text key={cur} style={styles.items} onPress={PressFun}>
-                {this.state.notebooklist[cur].name.toString()}
+                {this.props.NoteBookList[cur].name.toString()}
                 </Text>
             );
         }

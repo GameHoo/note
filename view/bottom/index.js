@@ -14,35 +14,29 @@ export default class Bottom extends Component {
     {
         super(props);
         this.state={
-            notes:[
+          notes:[],
+        };
+        fetch('http://10.10.10.3:3000/getNoteList',{method:'POST',headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body:'notebookname='+this.props.NoteBookName
+             })
+            .then((response)=>{
+                return response.json();
+            })
+            .then((json)=>{
+                if(json!=null)
                 {
-                    title:"我在这里欢笑，我在这里哭泣",
-                    content:'咖啡馆与广场有三个街区\n就象霓虹灯到月亮的距离\n人们在挣扎中相互告慰和拥抱\n寻找着 追著着 奄奄一息的碎梦\n我们在这欢笑 我们在这哭泣\n我们在这活着也在这死去\n我们在这祈祷 我们在这迷惘\n我们在这寻找 也在这失去'
-                },
-                {
-                    title:"快刀斩乱麻",
-                    content:'咖啡馆与广场有三个街区\n就象霓虹灯到月亮的距离\n人们在挣扎中相互告慰和拥抱\n寻找着 追著着 奄奄一息的碎梦\n我们在这欢笑 我们在这哭泣\n我们在这活着也在这死去\n我们在这祈祷 我们在这迷惘\n我们在这寻找 也在这失去'
-                },
-                {
-                    title:"效率才是第一",
-                    content:'咖啡馆与广场有三个街区\n就象霓虹灯到月亮的距离\n人们在挣扎中相互告慰和拥抱\n寻找着 追著着 奄奄一息的碎梦\n我们在这欢笑 我们在这哭泣\n我们在这活着也在这死去\n我们在这祈祷 我们在这迷惘\n我们在这寻找 也在这失去'
+                    this.setState({notes:json});
                 }
-            ]
-        }
-        /*fetch('http://10.10.10.3:3000/getNoteBookList',{method:'GET'})
-        .then((response)=>{
-            return response.json();
-        })
-        .then((json)=>{
-            this.setState({notebooklist:json});
-        })*/
+            })
     }
     render(){
         return this.getNotes();
     }
     
     getContent=(content)=>{
-    lines=content.split('\n');
+    var lines=content.split('\n');
     return(
         lines.map((line)=>{
             return(
@@ -56,8 +50,9 @@ export default class Bottom extends Component {
         })
     );}
     getNote=(note)=>{
+        if(this.props.searchText!=note.title.substring(0,this.props.searchText.length))return (<View key={uuid.v4()}/>);
         return(
-            <TouchableOpacity key={uuid.v4()}>
+            <TouchableOpacity onPress={this.ChangeToNote.bind(null,note.id)} key={uuid.v4()}>
             <View  style={styles.notewarp}>
                 <View style={styles.note}>
                     <Text style={styles.title}>{note.title}</Text>
@@ -69,10 +64,19 @@ export default class Bottom extends Component {
         );
     }
     getNotes=()=>{
+
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
                    {this.state.notes.map((note)=>{return this.getNote(note)})}
+                   <TouchableOpacity onPress={this.ChangeToNote}>
+                   <View style={styles.addnote}>
+                       <Image  style={styles.img} source={require('../../res/img/add2.png')}/>
+                       <Text style={styles.addnotetext}>
+                           新建一个记事
+                       </Text>
+                   </View>
+                  </TouchableOpacity>
                 <TouchableOpacity onPress={this.deletenootbook}>
                    <View style={styles.delete}>
                        <Text style={styles.deletetext}>
@@ -85,7 +89,13 @@ export default class Bottom extends Component {
         );
     }
     deletenootbook=()=>{
-        alert("hah")
+        alert("hah");
+    }
+    ChangeToNote=(id)=>{
+        if(id==null){
+            id=uuid.v4();
+        }
+        this.props.ChangeToNote(id);
     }
 }
 
@@ -142,7 +152,9 @@ const styles=StyleSheet.create({
         width:240.6,
         height:30,
         backgroundColor:'#FF6666',
-        margin:20,
+        marginLeft:20,
+        marginRight:20,
+        marginBottom:20,
         justifyContent: 'center',
         elevation:5
     },
@@ -150,5 +162,27 @@ const styles=StyleSheet.create({
         color:'#FFFFFF',
         textAlign:'center',
         fontSize:15
+    },
+    addnote:{
+        width:240.6,
+        height:30,
+        backgroundColor:'#FFFFFF',
+        marginLeft:20,
+        marginRight:20,
+        marginBottom:10,
+        justifyContent: 'center',
+        alignItems:'center',
+        elevation:5,
+        flexDirection:'row'
+    },
+    addnotetext:{
+        color:'#000000',
+        textAlign:'center',
+        fontSize:15
+    },
+    img:{
+        width:20,
+        height:20,
+        margin:5
     }
 })
