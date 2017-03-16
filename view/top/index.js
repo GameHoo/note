@@ -27,11 +27,14 @@ export default class Top extends Component {
         this.props.TopModeChange('search');
     }
     ChangeToIdle=()=>{
-         this.props.searchTextChange('');
+        this.props.searchTextChange('');
         this.props.TopModeChange('idle');
     }
     Search=()=>{
        this.props.searchTextChange(this.state.inputText);
+    }
+    AddNoteBook=()=>{
+        this.props.AddNoteBook(this.state.inputText);
     }
     getView=()=>{
         if(this.props.TopMode=='idle')
@@ -40,6 +43,9 @@ export default class Top extends Component {
         }else if(this.props.TopMode=='search')
         {
             return this.getSearchView();
+        }else if(this.props.TopMode=='AddNoteBook')
+        {
+            return this.getAddNoteBookView();
         }
     }
     getSearchView=()=>{
@@ -55,6 +61,21 @@ export default class Top extends Component {
                 </TouchableOpacity>
             </View>
         </View>
+        );
+    }
+    getAddNoteBookView=()=>{
+        return(
+            <View style={styles.container}>
+                <View style={styles.container2}>
+                    <TextInput style={styles.input} onChangeText={this.TextChange} autoFocus ={true} placeholder='请输入记事本标题' value={this.state.inputText}></TextInput>
+                    <TouchableOpacity onPress={this.AddNoteBook}>
+                        <Image  style={styles.img2} source={require('../../res/img/OK.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.ChangeToIdle}>
+                        <Image  style={styles.img2} source={require('../../res/img/cancel.png')}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
         );
     }
     getIdleView=()=>{

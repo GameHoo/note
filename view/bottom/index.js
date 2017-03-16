@@ -13,29 +13,13 @@ export default class Bottom extends Component {
     constructor(props)
     {
         super(props);
-        this.state={
-          notes:[],
-        };
-        fetch('http://10.10.10.3:3000/getNoteList',{method:'POST',headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body:'notebookname='+this.props.NoteBookName
-             })
-            .then((response)=>{
-                return response.json();
-            })
-            .then((json)=>{
-                if(json!=null)
-                {
-                    this.setState({notes:json});
-                }
-            })
     }
     render(){
         return this.getNotes();
     }
     
     getContent=(content)=>{
+        if(content==null)return(<View></View>);
     var lines=content.split('\n');
     return(
         lines.map((line)=>{
@@ -50,12 +34,14 @@ export default class Bottom extends Component {
         })
     );}
     getNote=(note)=>{
-        if(this.props.searchText!=note.title.substring(0,this.props.searchText.length))return (<View key={uuid.v4()}/>);
+
+        //if(this.props.searchText!=note.title.substring(0,this.props.searchText.length))
+            //return (<View style={{width:10,height:10,backgroundColor:"#FF00FF"}}  key={uuid.v4()}/>);
         return(
             <TouchableOpacity onPress={this.ChangeToNote.bind(null,note.id)} key={uuid.v4()}>
             <View  style={styles.notewarp}>
                 <View style={styles.note}>
-                    <Text style={styles.title}>{note.title}</Text>
+                    <Text style={styles.title}>{note.title==null?"":note.title}</Text>
                     <View style={styles.titleline}></View>
                     {this.getContent(note.content)}
                 </View>
@@ -64,12 +50,11 @@ export default class Bottom extends Component {
         );
     }
     getNotes=()=>{
-
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
-                   {this.state.notes.map((note)=>{return this.getNote(note)})}
-                   <TouchableOpacity onPress={this.ChangeToNote}>
+                   {this.props.Notes.map((note)=>{return this.getNote(note)})}
+                   <TouchableOpacity onPress={this.props.AddNote}>
                    <View style={styles.addnote}>
                        <Image  style={styles.img} source={require('../../res/img/add2.png')}/>
                        <Text style={styles.addnotetext}>
@@ -89,7 +74,7 @@ export default class Bottom extends Component {
         );
     }
     deletenootbook=()=>{
-        alert("hah");
+        this.props.DeleteNoteBook(this.props.NoteBookName);
     }
     ChangeToNote=(id)=>{
         if(id==null){
@@ -167,6 +152,7 @@ const styles=StyleSheet.create({
         width:240.6,
         height:30,
         backgroundColor:'#FFFFFF',
+        marginTop:10,
         marginLeft:20,
         marginRight:20,
         marginBottom:10,

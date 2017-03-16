@@ -16,7 +16,7 @@ import App from './view/app'
 export default class note extends Component {
   render() {
     return (
-        <Test/>
+        <App/>
     );
   }
 }

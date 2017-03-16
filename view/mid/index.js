@@ -11,43 +11,47 @@ export default class Mid extends Component {
     constructor(props)
     {
         super(props);
+        this.state={
+            pos:0
+        }
+
     }
     render(){
-        
+
         return(
                 <View style={styles.slide}>
-                    {this.createBrand(this.props.NoteBookPos-1)}
-                    {this.createBrand(this.props.NoteBookPos)}
-                    {this.createBrand(this.props.NoteBookPos+1)}
+                    {this.createBrand(this.state.pos-1)}
+                    {this.createBrand(this.state.pos)}
+                    {this.createBrand(this.state.pos+1)}
                 </View>
         );
     }
     leftPress=()=>{
-        this.props.SetNoteBookPos(this.props.NoteBookPos-1);
+        this.props.ChangeNoteBookName(this.props.NoteBookList[this.state.pos-1].name);
+        this.setState({pos:this.state.pos-1});
     }
     midPress=()=>{
         
     }
     rightPress=()=>{
-        this.props.SetNoteBookPos(this.props.NoteBookPos+1);
-    }
-    addpress=()=>{
-        alert('addpress');
+        this.props.ChangeNoteBookName(this.props.NoteBookList[this.state.pos+1].name);
+        this.setState({pos:this.state.pos+1});
     }
     createBrand=(cur)=>{
         if(cur<0 || cur>=this.props.NoteBookList.length)
         {
             return(
                 <View style={styles.imgcontainer}>
-                    <TouchableOpacity onPress={this.addpress}>
+                    <TouchableOpacity onPress={this.props.PreAddNoteBook}>
                         <Image  style={styles.img} source={require('../../res/img/add.png')}>
                         </Image>
                     </TouchableOpacity>
                 </View>
             );
         }
-        else if(this.props.NoteBookPos==cur)
+        else if(this.state.pos==cur)
         {
+            if(this.props.NoteBookList==null||this.props.NoteBookList.length==0)return(<View></View>);
             return(
                 <Text key={cur} style={styles.chooseditems} onPress={this.midPress}>
                 {this.props.NoteBookList[cur].name.toString()}
@@ -56,8 +60,9 @@ export default class Mid extends Component {
         }
         else
         {
+            if(this.props.NoteBookList==null||this.props.NoteBookList.length==0)return(<View></View>);
                 var PressFun;
-                if(cur<this.props.NoteBookPos)
+                if(cur<this.state.pos)
                 {
                     PressFun=this.leftPress;
                 }
@@ -80,7 +85,7 @@ const styles=StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         backgroundColor: '#F5FCFF',
-        flexDirection:'column'
+        flexDirection:'column',
     },
     slide:{
         height:52,

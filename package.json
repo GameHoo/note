@@ -9,7 +9,9 @@
   "dependencies": {
     "react": "15.4.2",
     "react-native": "0.42.0",
+    "react-native-autogrow-textinput": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.7.2",
+    "react-native-simple-markdown": "^1.0.60-rc.3",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
