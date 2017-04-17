@@ -30,7 +30,7 @@ export default class App extends Component {
         setInterval(()=>{this.RefreshNoteBookList();},3000)
     }
     RefreshNoteBookList = () => {
-        fetch('http://10.10.10.3:3000/getNoteBookList', {method: 'GET'})
+        fetch('http://119.29.62.43/getNoteBookList', {method: 'GET'})
             .then((response) => {
                 return response.json();
             })
@@ -42,7 +42,7 @@ export default class App extends Component {
             })
     }
     AddNoteBook = (inputText) => {
-        fetch('http://10.10.10.3:3000/addNoteBook', {
+        fetch('http://119.29.62.43/addNoteBook', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -58,7 +58,7 @@ export default class App extends Component {
     }
 
     DeleteNoteBook = () => {
-        fetch('http://10.10.10.3:3000/DeleteNoteBook', {
+        fetch('http://119.29.62.43/DeleteNoteBook', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -83,7 +83,7 @@ export default class App extends Component {
     }
     AddNote = (notebookname) => {
         var id = uuid.v4();
-        fetch('http://10.10.10.3:3000/addNote', {
+        fetch('http://119.29.62.43/addNote', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -101,7 +101,7 @@ export default class App extends Component {
         );
     }
     ChangeNoteBookName = (name) => {
-        fetch('http://10.10.10.3:3000/getNoteList', {
+        fetch('http://119.29.62.43/getNoteList', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },

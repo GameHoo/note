@@ -25,7 +25,7 @@ export default class NoteView extends Component {
         }
 
 
-        fetch('http://10.10.10.3:3000/getNote', {
+        fetch('http://119.29.62.43/getNote', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -77,7 +77,7 @@ export default class NoteView extends Component {
             );
     }
     deleteNote=()=>{
-        fetch('http://10.10.10.3:3000/deleteNote', {
+        fetch('http://119.29.62.43/deleteNote', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -88,7 +88,7 @@ export default class NoteView extends Component {
     }
     componentWillUnmount() {
         this.state.note.id = this.props.NoteId;
-        fetch('http://10.10.10.3:3000/updateNote', {
+        fetch('http://119.29.62.43/updateNote', {
             method: 'POST', headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
